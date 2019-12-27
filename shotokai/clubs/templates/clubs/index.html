@@ -1,0 +1,10 @@
+{% extends 'index_page/base_template.html' %}
+
+{% block content %}
+<table class="table table-hover table-striped"><tr><th></th><th>Location</th><th>Meeting times</th></tr>
+{% for club in clubs %}
+    <tr><td><a href="{% url 'clubs:club' club.id %}">{{ club }}</a></td><td>{{ club.location }}</td><td><ul>{% for time in club.meeting_time.all %}<li>{{ time }}</li> {% endfor %}</ul></td></tr>
+{% endfor %}
+</table>
+
+{% endblock %}

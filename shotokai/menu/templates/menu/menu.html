@@ -1,0 +1,71 @@
+<style>
+    .navbar {
+    min-height: 150px;
+    }
+    
+    .navbar-brand {
+    padding: 4px;
+    height: 150px;
+    /* line-height: 100px; */
+    }
+    
+</style>
+{% load static %}
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><img src="{% static 'akds_0.png' %}" class="img-fluid" style="max-width: 100%; height: auto;"></a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            {% for entry in menu.entries %}
+            <li{% if entry.active %} class="active"{% elif entry.dropdown %} class="dropdown"{% endif %}>
+                {% if entry.dropdown %}
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ entry.text }} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                    {% for subentry in entry.dropdown %}
+                        {% if subentry.href %}
+                            <li><a href="{{ subentry.href }}">{{ subentry.text }}</a></li>
+                        {% else %}
+                            <li role="separator" class="divider"></li>
+                        {% endif %}
+                    {% endfor %}
+                    </ul>
+                {% else %}<a href="{{ entry.href }}">{{ entry.text }}{% endif %}</a></li>
+            {% endfor %}          
+            </li>
+        </ul>
+        
+        <ul class="nav navbar-nav navbar-right">
+            <!-- <li><a href="#">Link</a></li> -->
+            {% if user.is_authenticated %}
+                <li class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.get_username }} <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    {% for subentry in menu.user_entries %}
+                        {% if subentry.href %}
+                            <li><a href="{{ subentry.href }}">{{ subentry.text }}</a></li>
+                        {% else %}
+                            <li role="separator" class="divider"></li>
+                        {% endif %}
+                    {% endfor %}
+                    <li role="separator" class="divider"></li>
+                    <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+                </ul>
+                </li>
+            {% else %}
+                <li><a href="{{ menu.login }}">Login</a></li>
+            {% endif %}
+        </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>

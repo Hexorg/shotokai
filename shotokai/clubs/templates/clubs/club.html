@@ -1,0 +1,10 @@
+{% extends 'index_page/base_template.html' %}
+
+{% block content %}
+<p>{{ club.instructor }}</p>
+<p>{{ club.location }}</p>
+<p>{% for time in club.meeting_time.all %}{{ time }}<br />{% endfor %}</p>
+{{ club.text|safe }}
+
+
+{% endblock %}
