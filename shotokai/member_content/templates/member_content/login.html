@@ -1,0 +1,23 @@
+<style>
+  @media only screen and (max-width: 768px) {
+      .dropdown-menu label {
+        color: #ccc;
+      }
+      .dropdown-menu {
+        padding-left: 20px;
+      }
+  }
+</style>
+<form id="loginMenuForm" method="post" class="navbar-form" action="{% url 'login' %}">
+    {% csrf_token %}
+    {% for field in login_form %}
+    <div class="input-group">
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+    </div>
+    {% endfor %}
+  </form>
+  <li><a href="#" onclick="document.getElementById('loginMenuForm').submit();">Login</a></li>

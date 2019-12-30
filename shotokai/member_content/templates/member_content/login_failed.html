@@ -1,0 +1,19 @@
+{% extends 'index_page/base_template.html' %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  {% for field in login_form %}
+  <div class="form-group">
+      {{ field.label_tag }}<br>
+      {{ field }}
+      {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+      {% endfor %}
+  </div>
+  {% endfor %}
+
+
+  <button type="submit">Sign in</button>
+</form>
+{% endblock %}

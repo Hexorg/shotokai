@@ -3,11 +3,13 @@ from django.contrib.auth.models import User
 
 
 class Member(models.Model):
+    
 
     class Belt(models.TextChoices):
         # format:
         # python constant = 'value that goes into the database', "text representation"
         # values that go into the database have to be 4 characters long
+        WHITE = 'WHT5', "White: 5Th Kyu"
         RED = 'RED4', "Red: 4Th Kyu"
         ORANGE = 'ORNG', "Orange: 3Rd Kyu"
         GREEN = 'GRN2', "Green: 2nd Kyu"
@@ -24,5 +26,5 @@ class Member(models.Model):
     paid_until = models.DateField()
 
     def __str__(self):
-
         return "{} {}".format(self.user.first_name if self.user.first_name else self.user, self.user.last_name if self.user.last_name else "")
+

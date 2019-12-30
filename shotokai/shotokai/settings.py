@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'menu',
     'member_content',
     'clubs',
+    'courses',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'menu.context_processors.menu_data',
+                'member_content.context_processors.login_form'
             ],
         },
     },

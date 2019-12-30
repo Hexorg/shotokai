@@ -40,16 +40,17 @@
                         {% endif %}
                     {% endfor %}
                     </ul>
-                {% else %}<a href="{{ entry.href }}">{{ entry.text }}{% endif %}</a></li>
-            {% endfor %}          
+                {% else %}<a href="{{ entry.href }}">{{ entry.text }}{% endif %}</a>
             </li>
+            {% endfor %}          
+            
         </ul>
         
         <ul class="nav navbar-nav navbar-right">
             <!-- <li><a href="#">Link</a></li> -->
             {% if user.is_authenticated %}
                 <li class="dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.get_username }} <span class="caret"></span></a>
+                        <a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.get_username }} <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     {% for subentry in menu.user_entries %}
                         {% if subentry.href %}
@@ -63,7 +64,14 @@
                 </ul>
                 </li>
             {% else %}
-                <li><a href="{{ menu.login }}">Login</a></li>
+                <li class="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="loginDropdown"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login <span class="caret"></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="loginDropdown">
+                        {% load member_login %}{% print_login_form %}
+                        <div role="separator" class="divider"></div>
+                        <li><a href="{% url 'register' %}">Sign up</a></li>
+                    </ul>
+                </li>
             {% endif %}
         </ul>
         </div><!-- /.navbar-collapse -->
