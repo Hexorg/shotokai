@@ -19,11 +19,12 @@
         {% load menu %}
         {% print_menu %}
 
-        <div role="main" class="main-container container">
-            <div class="well">{% block content %}Welcome to {{ site.name }}{% endblock %}</div>
-            
-        </div>
         
+        <div role="main" class="main-container container-fluid">
+            {% block page_header %} {% endblock %}
+            <div>{% block content %}Welcome to {{ site.name }}{% endblock %}</div>
+            {% block page_footer %} {% endblock %}
+        </div>
         
 
         {% block body_end %}

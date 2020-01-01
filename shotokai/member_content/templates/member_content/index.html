@@ -1,0 +1,32 @@
+{% extends 'index_page/base_template.html' %}
+
+{% block page_header %}
+{% if user.member.days_until_need_to_pay < 0 %}
+    <div class="alert alert-danger" role="alert">You need to pay dues</div>
+{% elif user.member.days_until_need_to_pay < 7 %}
+    <div class="alert alert-warning" role="alert">
+        Your membership expires
+        {% if user.member.days_until_need_to_pay > 0 %}
+            in {{ user.member.days_until_need_to_pay }} day{% if user.member.days_until_need_to_pay > 1 %}s{% endif %}!
+        {% else %}today!{% endif %}</div>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<h1>{{ user.member }}</h1>
+
+<table class="table table-hover table-striped">
+    <tr><th></th><th>Belt</th><th>Club(s)</th><th>Paid Until</th><th>Address</th></tr>
+    <tr><td><td>{{ user.member.html_belt }}</td><td>
+        {% if user.member.clubs %}
+            <ul>
+            {% for club in user.member.clubs %}
+            <li><a href="{% url 'clubs:club' club.id %}">{{ club }}</a></li>
+            {% endfor %}
+            </ul>
+        {% else %}TODO: Help figure out who my instructor is!{% endif %}
+    </td><td>{{ user.member.paid_until }}</td>
+    <td>{{ user.member.address }}</td></tr>
+</table>
+
+{% endblock %}

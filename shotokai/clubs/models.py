@@ -1,18 +1,8 @@
 from django.db import models
 
-from member_content.models import Member
 
 import time # for time formatting
 
-class Address(models.Model):
-    first_line = models.CharField(max_length=256)
-    second_line = models.CharField(null=True, max_length=256, blank=True)
-    city = models.CharField(max_length=128)
-    state = models.CharField(max_length=2)
-    zip = models.IntegerField()
-
-    def __str__(self):
-        return "{}\n{}, {} {}".format(self.first_line, self.city, self.state, "{:05d}".format(self.zip))
 
 class MeetingTime(models.Model):
     class DayOfWeek(models.TextChoices):
@@ -33,8 +23,8 @@ class MeetingTime(models.Model):
 
 class Club(models.Model):
     name = models.CharField('Club name', max_length=256, null=True, blank=True)
-    instructor = models.ForeignKey(Member, null=True, on_delete=models.SET_NULL)
-    location = models.ForeignKey(Address, null=True, on_delete=models.CASCADE)
+    instructor = models.ForeignKey('member_content.Member', null=True, on_delete=models.SET_NULL)
+    location = models.OneToOneField('location.Address', null=True, blank=True, on_delete=models.SET_NULL)
     meeting_time = models.ManyToManyField(MeetingTime)
     text = models.TextField('Content')
 

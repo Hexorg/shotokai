@@ -1,22 +1,36 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 
 def register(request):
     from django.contrib.auth import login, authenticate
-    from .forms import SignUpForm
+    from .forms import MemberCreationForm, BootstrapUserCreationForm
+    from location.forms import AddressForm
+    form_classes = [BootstrapUserCreationForm, MemberCreationForm, AddressForm]
+    form_objects = []
+    user, member, address = None, None, None
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            raw_password = form.cleaned_data.get('password')
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
-            return redirect('index')
+        for form_class in form_classes:
+            form_instance = form_class(data=request.POST)
+            form_objects.append(form_instance)
+            if form_instance.is_valid():
+                if isinstance(form_instance, BootstrapUserCreationForm):
+                    user = form_instance.save()
+                elif isinstance(form_instance, MemberCreationForm):
+                    member = form_instance.save(commit=False)
+                elif isinstance(form_instance, AddressForm):
+                    address = form_instance.save()
+        member.user = user
+        member.address = address
+        member.save()
+        login(request, user)
+        return redirect('member_content:index')
     else:
-        form = SignUpForm()
-    return render(request, 'member_content/register.html', {'form': form})
+        for form_class in form_classes:
+            form_objects.append(form_class())
+    return render(request, 'member_content/register.html', {'forms': form_objects})
 
 def logout(request):
     from django.contrib.auth import logout
@@ -33,7 +47,7 @@ def login(request):
             raw_password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('index')
+            return redirect('member_content:index')
         else:
             return render(request, 'member_content/login_failed.html', {'login_form':form})
         
@@ -41,3 +55,8 @@ def login(request):
     from django.http import HttpResponseBadRequest
     return HttpResponseBadRequest("Only POST request allowed here")
     
+@login_required(login_url='/')
+def index(request):
+    return render(request, 'member_content/index.html')
+
+

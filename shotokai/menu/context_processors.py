@@ -29,7 +29,7 @@ def menu_data(request):
     #             {'dropdown': organization_entries, 'text':"Organization"},
     #             {'dropdown': media_entries, 'text':"Media"}]
 
-    user_entries = [{'href':'#', 'text':'Add Post'}]
+    user_entries = [{'href':reverse('member_content:index'), 'text':'Home'}]
     if request.user.is_staff:
         user_entries.append({'href':reverse('admin:index'), 'text':'Admin interface'})
     menu = {'entries': entries, 'user_entries': user_entries, 'login':'user/login'}

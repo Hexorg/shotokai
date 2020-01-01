@@ -50,7 +50,7 @@
             <!-- <li><a href="#">Link</a></li> -->
             {% if user.is_authenticated %}
                 <li class="dropdown">
-                        <a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.get_username }} <span class="caret"></span></a>
+                        <a class="nav-link dropdown-toggle" href="#"  role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.member }} <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     {% for subentry in menu.user_entries %}
                         {% if subentry.href %}
@@ -60,7 +60,7 @@
                         {% endif %}
                     {% endfor %}
                     <li role="separator" class="divider"></li>
-                    <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+                    <li><a href="{% url 'member_content:logout'%}?next={{request.path}}">Logout</a></li>
                 </ul>
                 </li>
             {% else %}
@@ -69,7 +69,7 @@
                     <ul class="dropdown-menu" aria-labelledby="loginDropdown">
                         {% load member_login %}{% print_login_form %}
                         <div role="separator" class="divider"></div>
-                        <li><a href="{% url 'register' %}">Sign up</a></li>
+                        <li><a href="{% url 'member_content:register' %}">Sign up</a></li>
                     </ul>
                 </li>
             {% endif %}
