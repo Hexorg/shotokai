@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, JsonResponse
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 from .models import Club
 from .forms import AddBlogForm
 
 def index(request):
     return render(request, 'clubs/index.html', {'clubs': Club.objects.all()}) # pylint: disable=no-member
-        
 
+@login_required        
+@permission_required('clubs.can_add', raise_exception=True)
 def club(request, club_id):
     try:
         return render(request, 'clubs/club.html', {'club': Club.objects.get(id=club_id)}) # pylint: disable=no-member

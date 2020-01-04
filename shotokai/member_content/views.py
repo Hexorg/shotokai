@@ -32,28 +32,6 @@ def register(request):
             form_objects.append(form_class())
     return render(request, 'member_content/register.html', {'forms': form_objects})
 
-def logout(request):
-    from django.contrib.auth import logout
-    logout(request)
-    return redirect('index')
-
-def login(request):
-    from django.contrib.auth import login, authenticate
-    from .forms import MenuLoginForm
-    if request.method == 'POST':
-        form = MenuLoginForm(data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('member_content:index')
-        else:
-            return render(request, 'member_content/login_failed.html', {'login_form':form})
-        
-    
-    from django.http import HttpResponseBadRequest
-    return HttpResponseBadRequest("Only POST request allowed here")
     
 @login_required(login_url='/')
 def index(request):

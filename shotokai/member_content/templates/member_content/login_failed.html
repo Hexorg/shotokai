@@ -1,7 +1,21 @@
 {% extends 'index_page/base_template.html' %}
 
 {% block content %}
-<form method="post">
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" method="{% url 'member_content:login' %}">
   {% csrf_token %}
   {% for field in login_form %}
   <div class="form-group">
@@ -16,4 +30,6 @@
 
   <button type="submit">Sign in</button>
 </form>
+
+<p><a href="{% url 'member_content:password_reset' %}">Lost password?</a></p>
 {% endblock %}
